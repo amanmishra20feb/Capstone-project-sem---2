@@ -33,7 +33,7 @@ function displayJobs(jobs) {
 
 async function fetchJobs() {
   try {
-    const response = await fetch("https://remotive.com/api/remote-jobs");
+     const response = await fetch("https://remotive.com/api/remote-jobs");
     const data = await response.json();
 
     allJobs = data.jobs.slice(0, 20);
