@@ -1,8 +1,5 @@
-
-
 let allJobs = [];
 
-// ye function jobs ko screen par dikhata hai
 function displayJobs(jobs) {
   const jobsContainer = document.getElementById("jobsContainer");
   const messageBox = document.getElementById("messageBox");
@@ -15,9 +12,11 @@ function displayJobs(jobs) {
     return;
   }
 
-  jobs.forEach(function(job) {
+  for (let i = 0; i < jobs.length; i++) {
+    const job = jobs[i];
+
     const card = document.createElement("div");
-    card.classList.add("job-card");
+    card.className = "job-card";
 
     card.innerHTML = `
       <h3>${job.title}</h3>
@@ -29,21 +28,17 @@ function displayJobs(jobs) {
     `;
 
     jobsContainer.appendChild(card);
-  });
+  }
 }
 
-// ye function API se jobs laata hai
 async function fetchJobs() {
-  const jobsContainer = document.getElementById("jobsContainer");
-
   try {
     const response = await fetch("https://remotive.com/api/remote-jobs");
     const data = await response.json();
 
-    allJobs = data.jobs.slice(0, 20); // sirf 20 jobs le rahe hain
+    allJobs = data.jobs.slice(0, 20);
     displayJobs(allJobs);
   } catch (error) {
-    // agar API fail ho jaye to simple sample data dikhayenge
     allJobs = [
       {
         title: "Frontend Developer",
@@ -75,17 +70,17 @@ async function fetchJobs() {
   }
 }
 
-// ye function search aur filter karta hai
 function searchJobs() {
   const searchValue = document.getElementById("searchInput").value.toLowerCase();
   const locationValue = document.getElementById("locationInput").value.toLowerCase();
   const typeValue = document.getElementById("jobTypeFilter").value;
 
-  const filteredJobs = allJobs.filter(function(job) {
+  const filteredJobs = allJobs.filter(function (job) {
     const titleMatch = job.title.toLowerCase().includes(searchValue);
     const locationMatch = job.candidate_required_location.toLowerCase().includes(locationValue);
 
     let typeMatch = true;
+
     if (typeValue !== "all") {
       typeMatch = job.job_type === typeValue;
     }
@@ -96,5 +91,4 @@ function searchJobs() {
   displayJobs(filteredJobs);
 }
 
-// page load hote hi jobs fetch hongi
 fetchJobs();
